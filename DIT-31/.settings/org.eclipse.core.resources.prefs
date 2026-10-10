@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/com/pup/dit/EquipmentMain.java=UTF-8
+encoding//src/com/pup/dit/exception/InsufficientEquipmentException.java=UTF-8
+encoding//src/com/pup/dit/generics/EquipmentRegistry.java=UTF-8
+encoding//src/com/pup/dit/model/Equipment.java=UTF-8
