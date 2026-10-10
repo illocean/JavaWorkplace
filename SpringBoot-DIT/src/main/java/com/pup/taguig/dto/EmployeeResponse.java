@@ -5,15 +5,15 @@ package com.pup.taguig.dto;
 public class EmployeeResponse {
 
 	//encapsulation OOP
-	private int id;
+	private Long id;
 	private String name;
 	private String position;
 	private double salary;
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -31,11 +31,11 @@ public class EmployeeResponse {
 	public double getSalary() {
 		return salary;
 	}
-	public void setSalary(double salary) {
+	public void setSalary(float salary) {
 		this.salary = salary;
 	}
 	
-	public EmployeeResponse(int id, String name, String position, double salary) {
+	public EmployeeResponse(Long id, String name, String position, float salary) {
 		super();
 		this.id = id;
 		this.name = name;

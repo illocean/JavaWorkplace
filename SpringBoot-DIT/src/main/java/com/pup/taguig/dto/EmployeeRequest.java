@@ -2,12 +2,12 @@ package com.pup.taguig.dto;
 
 public class EmployeeRequest {
 	
-	private int id;
+	private Long id;
 	private String name;
 	private String position;
-	private double salary;
+	private float salary;
 	
-	public EmployeeRequest(int id, String name, String position, double salary) {
+	public EmployeeRequest(Long id, String name, String position, float salary) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -15,11 +15,11 @@ public class EmployeeRequest {
 		this.salary = salary;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -39,11 +39,11 @@ public class EmployeeRequest {
 		this.position = position;
 	}
 
-	public double getSalary() {
+	public float getSalary() {
 		return salary;
 	}
 
-	public void setSalary(double salary) {
+	public void setSalary(float salary) {
 		this.salary = salary;
 	}
 	

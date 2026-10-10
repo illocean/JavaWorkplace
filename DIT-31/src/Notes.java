@@ -97,6 +97,21 @@
 
 	arraylist = retrieving/showing data
 	linkedlist = manipulate data, insert
+	hashmap = labeling of item, for faster lookup
+	
+	hashset (child of set) = keep track of distinct items
+		wrapper classes' parent are objects, so for dynamic use "Object",
+		
+	iterators and traversals:
+	interator methods: 
+		hasNext();
+		next();
+		remove();
+	
+	Traversal types:
+		enhanced for-loop
+		listIterator
+		fail-fast
 
 */
 
