@@ -7,8 +7,8 @@ import com.pup.taguig.model.Employee;
 import com.pup.taguig.model.Student;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Student, Long>{
+public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 
-	void save(Employee employee);
+	Employee save(Employee employee);
 
 }

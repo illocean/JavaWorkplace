@@ -24,9 +24,23 @@ public class Notes {
 	 * 
 	 * ORM - programming interact: object <-> orm <-> relational database
 	 * 
-	 * practice "OpenJPA" 
 	 * 
-	 * @Entity (annontatio means table in database)
+	 * 
+	 *
+	 * 
+	 * @Entity (annontatio means table in database)]
+	 * 
+	 * 
+	 * 09 - 17 - 26
+	 * 
+	 * @autwired controller to service  (binubuo object to call other class)
+	 * @Entity class name = classname database or @Entity (Table="name")
+	 * 
+	 * service - pertaining implementation (sometimes no interface)
+	 * 
+	 * to search class: ctrl shift r
+	 * 
+	 *  "OpenJPA" - when qeurying its not the sql query but by functions
 	 * 
 	 */
 	

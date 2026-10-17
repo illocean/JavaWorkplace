@@ -3,10 +3,10 @@ package com.activity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import com.activity.model.EmployeeModel;
+import com.activity.model.Employee;
 
-public class Employee {
-	static List<EmployeeModel> Employees = new ArrayList<>();
+public class EmployeeMain {
+	static List<Employee> Employees = new ArrayList<>();
 
 	public static void main(String[] args) {
 		String[] options = { "1. add", 
@@ -28,9 +28,11 @@ public class Employee {
 			
 			switch (menu) {
 			case 0: 
-				add(); break;
+				add(); 
+				break;
 			case 1: 
-				view(); break;
+				view(); 
+				break;
 			case 2: 
 				highestSalary(); break;
 			case 3: 
@@ -49,22 +51,30 @@ public class Employee {
 		String lastName = JOptionPane.showInputDialog("Enter last name: ");
 		String department = JOptionPane.showInputDialog("Enter department: ");
 		Double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter Salary: "));
-		Employees.add(new EmployeeModel(employeeId, firstName, lastName, department, salary));
+		
+		Employees.add(new Employee(employeeId, firstName, lastName, department, salary));
 	}
 
 	private static void view() {
 		StringBuilder sb = new StringBuilder();
-		for (EmployeeModel e : Employees) sb.append(e.toString()).append("\n");
+		
+		for (Employee e : Employees) {
+			sb.append(e.toString()).append("\n");
+		}
+		
 		JOptionPane.showMessageDialog(null, sb.length() == 0 ? "No employees" : sb);
 	}
 
 	private static void highestSalary() {
 		if (Employees.isEmpty()) {
+			
 			JOptionPane.showMessageDialog(null, "No employees");
 			return;
 		}
-		EmployeeModel highest = Employees.get(0);
-		for (EmployeeModel e : Employees)
+		
+		Employee highest = Employees.get(0);
+		
+		for (Employee e : Employees)
 			if (e.getSalary() > highest.getSalary()) highest = e;
 		JOptionPane.showMessageDialog(null, "Highest salary:\n" + highest);
 	}
@@ -74,8 +84,11 @@ public class Employee {
 			JOptionPane.showMessageDialog(null, "No employees");
 			return;
 		}
+		
 		double total = 0;
-		for (EmployeeModel e : Employees) total += e.getSalary();
-		JOptionPane.showMessageDialog(null, "Average salary: " + String.format("%.2f", total / Employees.size()));
+		
+		for (Employee e : Employees) total += e.getSalary();
+		JOptionPane.showMessageDialog(null, "Average salary: " 
+					+ String.format("%.2f", total / Employees.size()));
 	}
 }

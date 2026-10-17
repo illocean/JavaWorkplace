@@ -2,12 +2,13 @@ package com.pup.taguig.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pup.taguig.dto.EmployeeRequest;
-import com.pup.taguig.dto.EmployeeResponse;
+import com.pup.taguig.dto.EmployeeRequestDTO;
+import com.pup.taguig.dto.EmployeeResponseDTO;
 import com.pup.taguig.model.Employee;
 import com.pup.taguig.repository.EmployeeRepository;
 import com.pup.taguig.service.EmployeeService;
@@ -17,22 +18,22 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	private final EmployeeRepository repository;
 	
-	private List<EmployeeResponse> employees = 
+	private List<EmployeeResponseDTO> employees = 
 							//"new" creates object
-							new ArrayList<EmployeeResponse>();
+							new ArrayList<EmployeeResponseDTO>();
 
 	EmployeeServiceImpl(EmployeeRepository repository) {
 		this.repository = repository;
 	}
 	
-	public List<EmployeeResponse> getAllEmployees() {
+	public List<EmployeeResponseDTO> getAllEmployees() {
 		return employees;
 	}
 
 	@Override
-	public EmployeeResponse addEmployee(EmployeeRequest request) {
+	public EmployeeResponseDTO addEmployee(EmployeeRequestDTO request) {
 		
-		EmployeeResponse response = convertRequestToResponse(request);
+		EmployeeResponseDTO response = convertRequestToResponse(request);
 		//employees.add(response);
 		
 		
@@ -43,8 +44,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return response;
 	}
 	
-	private EmployeeResponse convertRequestToResponse(EmployeeRequest request) {
-		EmployeeResponse response = new EmployeeResponse();
+	private EmployeeResponseDTO convertRequestToResponse(EmployeeRequestDTO request) {
+		EmployeeResponseDTO response = new EmployeeResponseDTO();
 		
 		response.setId(request.getId());
 		response.setName(request.getName());
@@ -52,5 +53,27 @@ public class EmployeeServiceImpl implements EmployeeService{
 		response.setSalary(request.getSalary());
 		
 		return response;
+	}
+	
+
+	@Override
+	public EmployeeResponseDTO getEmployeeById(Long id) {
+		
+		//it retrieves data from database   
+		//                          select * from employees where id = ?
+		Employee employee = repository.findById(id).orElseThrow(()->
+													new RuntimeException("Employee not Found " + id)); 
+		
+		//converts object 'employee' to EmployeeResponseDTO'
+		EmployeeResponseDTO response = convertEmployeeToResponse(employee);
+		return response;
+	}
+	
+	private EmployeeResponseDTO convertEmployeeToResponse(Employee employee) {
+
+		EmployeeResponseDTO responseDTO = new EmployeeResponseDTO();
+		System.out.println(employee.toString());
+		
+		return null;
 	}
 }

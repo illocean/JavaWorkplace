@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pup.taguig.dto.EmployeeRequest;
-import com.pup.taguig.dto.EmployeeResponse;
+import com.pup.taguig.dto.EmployeeRequestDTO;
+import com.pup.taguig.dto.EmployeeResponseDTO;
 import com.pup.taguig.service.EmployeeService;
 
 import jakarta.websocket.server.PathParam;
@@ -46,7 +46,7 @@ public class EmployeeController {
 	}*/
 
 	@GetMapping
-	public List<EmployeeResponse> getAllEmployees(){
+	public List<EmployeeResponseDTO> getAllEmployees(){
 		//calls the interface
 		return employeeService.getAllEmployees();
 	}
@@ -70,8 +70,15 @@ public class EmployeeController {
 	
 	
 	@PostMapping
-	public EmployeeResponse addEmployee(@RequestBody EmployeeRequest request) {
+	public EmployeeResponseDTO addEmployee(@RequestBody EmployeeRequestDTO request) {
 
 		return employeeService.addEmployee(request);
+	}
+	
+	
+	@GetMapping("/{id}")
+	public EmployeeResponseDTO getEmployeeById(@PathVariable Long id) {
+		
+		return employeeService.getEmployeeById(id);
 	}
 }

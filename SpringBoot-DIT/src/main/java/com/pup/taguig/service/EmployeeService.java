@@ -2,8 +2,8 @@ package com.pup.taguig.service;
 
 import java.util.List;
 
-import com.pup.taguig.dto.EmployeeRequest;
-import com.pup.taguig.dto.EmployeeResponse;
+import com.pup.taguig.dto.EmployeeRequestDTO;
+import com.pup.taguig.dto.EmployeeResponseDTO;
 
 /*
  * abstraction: kung ano nailagay sa rito,
@@ -13,8 +13,11 @@ import com.pup.taguig.dto.EmployeeResponse;
 */
 public interface EmployeeService {
 	
-	public List<EmployeeResponse> getAllEmployees();
+	public List<EmployeeResponseDTO> getAllEmployees();
 	
-	public EmployeeResponse addEmployee(EmployeeRequest request);
+	public EmployeeResponseDTO addEmployee(EmployeeRequestDTO request);
+	
+	//mandatory in implementation if declared here
+	public EmployeeResponseDTO getEmployeeById(Long id);
 
 }

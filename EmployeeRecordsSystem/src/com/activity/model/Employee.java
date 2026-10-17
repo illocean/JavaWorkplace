@@ -1,13 +1,14 @@
 package com.activity.model;
 
-public class EmployeeModel {
+//							@comparable interface to SORT the object
+public class Employee implements Comparable<Employee> {
 	private int employeeId;
 	private String firstName;
 	private String lastName;
 	private String department;
 	private Double salary;
 
-	public EmployeeModel(int employeeId, String firstName, String lastName, String department, Double salary) {
+	public Employee(int employeeId, String firstName, String lastName, String department, Double salary) {
 		super();
 		this.employeeId = employeeId;
 		this.firstName = firstName;
@@ -58,7 +59,11 @@ public class EmployeeModel {
 
 	@Override
 	public String toString() {
-		return "EmployeeModel [employeeId=" + employeeId + ", firstName=" + firstName + ", lastName=" + lastName
+		return "Employee [employeeId=" + employeeId + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", department=" + department + ", salary=" + salary + "]";
+	}
+	
+	public int compareTo(Employee other) {
+		return Double.compare(this.salary, other.salary);
 	}
 }
