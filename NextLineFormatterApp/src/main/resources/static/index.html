@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NextLine Formatter</title>
+<style>
+	:root {
+		--bg: #0f1115;
+		--panel: #171a21;
+		--border: #2a2f3a;
+		--text: #e6e9ef;
+		--muted: #8b93a3;
+		--accent: #6ea8fe;
+		--error: #ff7b72;
+	}
+	* { box-sizing: border-box; }
+	body {
+		margin: 0;
+		min-height: 100vh;
+		background: var(--bg);
+		color: var(--text);
+		font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+		display: flex;
+		justify-content: center;
+		padding: 32px 20px 48px;
+	}
+	main { width: 100%; max-width: 1100px; }
+	header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+	h1 { font-size: 20px; margin: 0; font-weight: 650; letter-spacing: -0.01em; }
+	.sub { color: var(--muted); font-size: 13px; margin: 0 0 24px; }
+	.sub code { color: var(--text); font-size: 12.5px; }
+	.panes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+	@media (max-width: 820px) { .panes { grid-template-columns: 1fr; } }
+	.pane { display: flex; flex-direction: column; min-width: 0; }
+	.pane-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; min-height: 28px; }
+	label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+	textarea {
+		width: 100%;
+		min-height: 380px;
+		resize: vertical;
+		padding: 14px;
+		background: var(--panel);
+		color: var(--text);
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		font: 14px/1.6 ui-monospace, "Cascadia Code", Consolas, monospace;
+		tab-size: 4;
+	}
+	textarea:focus { outline: none; border-color: var(--accent); }
+	textarea[readonly] { color: #c8d2e4; }
+	.meta { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+	.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+	button {
+		padding: 9px 18px;
+		border-radius: 7px;
+		border: 1px solid var(--border);
+		background: var(--panel);
+		color: var(--text);
+		font: inherit;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	button:hover:not(:disabled) { border-color: var(--accent); }
+	button:disabled { opacity: 0.55; cursor: default; }
+	button.primary { background: var(--accent); border-color: var(--accent); color: #0b1220; }
+	.status { margin-top: 12px; font-size: 13px; min-height: 20px; color: var(--muted); }
+	.status.error { color: var(--error); }
+	.hint { color: var(--muted); font-size: 12px; margin-top: 16px; }
+	kbd {
+		font: 11px ui-monospace, Consolas, monospace;
+		border: 1px solid var(--border);
+		border-bottom-width: 2px;
+		border-radius: 4px;
+		padding: 1px 5px;
+		color: var(--text);
+	}
+</style>
+</head>
+<body>
+<main>
+	<header>
+		<h1>NextLine Formatter</h1>
+	</header>
+	<p class="sub">Inserts one line break after each comma, period, or colon group. Calls <code>POST /api/v1/format</code> — same result as the API.</p>
+
+	<div class="panes">
+		<div class="pane">
+			<div class="pane-head">
+				<label for="input">Input</label>
+				<span class="meta" id="inputMeta">0 chars</span>
+			</div>
+			<textarea id="input" spellcheck="false" placeholder="Paste text here, e.g. Hello, world. Welcome: this is a formatter."></textarea>
+		</div>
+		<div class="pane">
+			<div class="pane-head">
+				<label for="output">Formatted</label>
+				<span class="meta" id="outputMeta">0 lines</span>
+			</div>
+			<textarea id="output" readonly spellcheck="false" placeholder="Formatted result appears here."></textarea>
+		</div>
+	</div>
+
+	<div class="actions">
+		<button id="format" class="primary" type="button">Format</button>
+		<button id="copy" type="button" disabled>Copy</button>
+		<button id="save" type="button" disabled>Save .txt</button>
+		<button id="clear" type="button">Clear</button>
+	</div>
+
+	<div class="status" id="status" role="status" aria-live="polite"></div>
+
+	<p class="hint">Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to format. Whitespace is preserved exactly, and no trailing newline is added.</p>
+</main>
+
+<script>
+(() => {
+	const input = document.getElementById('input');
+	const output = document.getElementById('output');
+	const inputMeta = document.getElementById('inputMeta');
+	const outputMeta = document.getElementById('outputMeta');
+	const status = document.getElementById('status');
+	const formatButton = document.getElementById('format');
+	const copyButton = document.getElementById('copy');
+	const saveButton = document.getElementById('save');
+	const clearButton = document.getElementById('clear');
+
+	const setStatus = (message, isError = false) => {
+		status.textContent = message;
+		status.classList.toggle('error', isError);
+	};
+
+	const updateInputMeta = () => {
+		inputMeta.textContent = `${input.value.length} chars`;
+	};
+
+	const updateOutput = (text) => {
+		output.value = text;
+		const hasText = text.length > 0;
+		outputMeta.textContent = hasText ? `${text.split('\n').length} lines, ${text.length} chars` : '0 lines';
+		copyButton.disabled = !hasText;
+		saveButton.disabled = !hasText;
+	};
+
+	const format = async () => {
+		if (formatButton.disabled) {
+			return;
+		}
+		formatButton.disabled = true;
+		setStatus('Formatting…');
+		try {
+			const response = await fetch('/api/v1/format', {
+				method: 'POST',
+				headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+				body: input.value
+			});
+			if (!response.ok) {
+				throw new Error(`Request failed with status ${response.status}`);
+			}
+			const text = await response.text();
+			// Client-side nicety only: the API preserves spaces around newlines
+			// (e.g. "Hello,\n world."), but in the  editor we hide the leading
+			// space that lands at the start of a wrapped line for tidier output.
+			const trimmed = text.replace(/\n[ \t]*/g, '\n');
+			updateOutput(trimmed);
+			setStatus(`Done — ${trimmed.split('\n').length} lines.`);
+		} catch (error) {
+			setStatus(`Could not format: ${error.message}`, true);
+		} finally {
+			formatButton.disabled = false;
+		}
+	};
+
+	const copy = async () => {
+		try {
+			await navigator.clipboard.writeText(output.value);
+			setStatus('Copied formatted text.');
+		} catch (error) {
+			output.select();
+			const copied = document.execCommand('copy');
+			setStatus(copied ? 'Copied formatted text.' : 'Copy failed — select the text and press Ctrl+C.', !copied);
+		}
+	};
+
+	const save = () => {
+		const blob = new Blob([output.value], { type: 'text/plain;charset=utf-8' });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = 'formatted.txt';
+		link.click();
+		URL.revokeObjectURL(url);
+		setStatus('Saved formatted.txt.');
+	};
+
+	const clear = () => {
+		input.value = '';
+		updateInputMeta();
+		updateOutput('');
+		setStatus('');
+		input.focus();
+	};
+
+	input.addEventListener('input', updateInputMeta);
+	input.addEventListener('keydown', (event) => {
+		if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+			event.preventDefault();
+			format();
+		}
+	});
+	formatButton.addEventListener('click', format);
+	copyButton.addEventListener('click', copy);
+	saveButton.addEventListener('click', save);
+	clearButton.addEventListener('click', clear);
+
+	updateInputMeta();
+})();
+</script>
+</body>
+</html>
