@@ -1,0 +1,5 @@
+package lunar.hc;
+
+public class Broken {
+    int x = undefinedVariable;
+}

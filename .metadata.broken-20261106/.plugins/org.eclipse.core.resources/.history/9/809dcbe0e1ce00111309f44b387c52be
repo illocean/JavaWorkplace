@@ -1,0 +1,183 @@
+package com.report.basic;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class practice {
+
+	static final Path BASE = Paths.get("D://DemoFolder");
+
+	public static void main(String[] args) {
+		if (!Files.isDirectory(BASE)) {
+			try {
+				Files.createDirectories(BASE);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "cannot create " + BASE + e.getMessage());
+			}
+		}
+
+		int menu;
+		do {
+			menu = showVerticalMenu();
+			switch (menu) {
+			case 0:
+				createDirs();
+				break;
+			case 1:
+				list();
+				break;
+			case 2:
+				delete();
+				break;
+			case 3:
+				attributes();
+				break;
+			case 4:
+				break;
+			default:
+				// -1 = closed window, treat as exit
+				menu = 4;
+			}
+		} while (menu != 4);
+	}
+
+	// Vertical menu: choices stacked top-to-bottom instead of side-by-side
+	private static int showVerticalMenu() {
+		String[] options = {
+				"1. Create Directories",
+				"2. List files",
+				"3. Delete files",
+				"4. Attributes",
+				"5. Exit"
+		};
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		final int[] selected = { -1 };
+		final JDialog[] holder = new JDialog[1];
+		for (int i = 0; i < options.length; i++) {
+			final int idx = i;
+			JButton btn = new JButton(options[i]);
+			btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+			btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, btn.getPreferredSize().height));
+			btn.addActionListener(e -> {
+				selected[0] = idx;
+				if (holder[0] != null) holder[0].dispose();
+			});
+			panel.add(btn);
+			panel.add(Box.createVerticalStrut(4));
+		}
+		JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE,
+				JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null);
+		JDialog dialog = pane.createDialog(null, "File manipulation options");
+		holder[0] = dialog;
+		dialog.setVisible(true);
+		return selected[0];
+	}
+
+	private static void createDirs() {
+		JFileChooser chooser = new JFileChooser(BASE.toFile());
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) return;
+		Path parent = chooser.getSelectedFile().toPath();
+		Path target = parent.resolve("alphabet/a/b/c/d/e/g");
+
+		StringBuilder sb = new StringBuilder();
+		if (Files.isDirectory(target)) {
+			sb.append("target already exists: ").append(target);
+		} else {
+			try {
+				Files.createDirectories(target);
+				sb.append("Successfully created: ").append(target);
+			} catch (IOException e) {
+				sb.append("createDirectories failed: ").append(e.getMessage());
+			}
+		}
+		JOptionPane.showMessageDialog(null, sb);
+	}
+
+	private static void list() {
+		JFileChooser chooser = new JFileChooser(BASE.toFile());
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) return;
+		Path target = chooser.getSelectedFile().toPath();
+
+		StringBuilder sb = new StringBuilder();
+		if (!Files.isDirectory(target)) {
+			sb.append("not a directory: ").append(target);
+			JOptionPane.showMessageDialog(null, sb);
+			return;
+		}
+
+		try (Stream<Path> stream = Files.walk(target, 7)) {
+			stream.forEach(p -> sb.append(p).append("\n"));
+		} catch (IOException e) {
+			sb.append("walk failed: ").append(e.getMessage());
+		}
+		JOptionPane.showMessageDialog(null, sb);
+	}
+
+	private static void delete() {
+		JFileChooser chooser = new JFileChooser(BASE.toFile());
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) return;
+		Path target = chooser.getSelectedFile().toPath();
+
+		StringBuilder sb = new StringBuilder();
+		if (!Files.exists(target)) {
+			sb.append("nothing to delete");
+		} else {
+			try {
+				deleteAll(target);
+				sb.append("deleted the entire tree: ").append(target);
+			} catch (IOException e) {
+				sb.append("failed to delete all: ").append(e.getMessage());
+			}
+		}
+		JOptionPane.showMessageDialog(null, sb);
+	}
+
+	private static void deleteAll(Path folder) throws IOException {
+		if (!Files.exists(folder)) return;
+		try (Stream<Path> stream = Files.walk(folder)) {
+			for (Path p : stream.sorted(Comparator.reverseOrder()).toList())
+				Files.delete(p);
+		}
+	}
+
+	private static void attributes() {
+		JFileChooser chooser = new JFileChooser(BASE.toFile());
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) return;
+		Path file = chooser.getSelectedFile().toPath();
+
+		StringBuilder sb = new StringBuilder();
+		try {
+			if (!Files.isRegularFile(file)) {
+				sb.append("not a file: ").append(file);
+			} else {
+				BasicFileAttributes attrs = Files.readAttributes(file, BasicFileAttributes.class);
+				sb.append(file).append("\n\n");
+				sb.append("size: ").append(attrs.size()).append(" bytes\n");
+				sb.append("last modified: ").append(attrs.lastModifiedTime()).append("\n");
+				sb.append("Create: ").append(attrs.creationTime()).append("\n");
+			}
+		} catch (IOException e) {
+			sb.append("failed: ").append(e.getMessage());
+		}
+		JOptionPane.showMessageDialog(null, sb);
+	}
+}

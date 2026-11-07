@@ -1,0 +1,11 @@
+public class Main {
+    public static void main(String[] a) throws Exception {
+        int n = twice(21);
+        System.out.println(n);
+        Thread.sleep(8000);
+    }
+    static int twice(int x) {
+        int y = x * 2;
+        return y;
+    }
+}

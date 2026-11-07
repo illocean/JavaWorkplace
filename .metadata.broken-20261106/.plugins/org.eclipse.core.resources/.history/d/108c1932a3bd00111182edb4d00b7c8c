@@ -1,0 +1,6 @@
+public class Main {
+    public static void main(String[] a) {
+        System.out.println(helper(21));
+    }
+    static int helper(int n) { return n * 2; }
+}

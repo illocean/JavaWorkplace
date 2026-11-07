@@ -1,0 +1,8 @@
+package healthcheck;
+
+public class Counter {
+    public static void main(String[] args) {
+        int n = 7;
+        System.out.println("COUNTER_V1=" + (n * 6));
+    }
+}

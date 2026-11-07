@@ -1,0 +1,18 @@
+package lunar.verify;
+
+
+
+public class ProbeMain {
+    public static void main(String[] args) {
+        int seed = 7;
+        String message = "lunar-ready";
+        int[] numbers = {1, 2, 3};
+        int answer = addOne(seed);
+        System.out.println("LUNAR_VERIFICATION=" + answer + ":" + message + ":" + numbers.length);
+    }
+
+    static int addOne(int value) {
+        int adjusted = value + 1;
+        return adjusted;
+    }
+}

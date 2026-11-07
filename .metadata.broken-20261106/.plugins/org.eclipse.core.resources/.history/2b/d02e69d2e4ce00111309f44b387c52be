@@ -1,0 +1,161 @@
+package com.report.basic;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+public class practice {
+
+	public static void main(String[] args) {
+
+		String[] options = {
+				"1. Create Directories",
+				"2. List files",
+				"3. Delete files",
+				"4. Attributes",
+				"5. Exit"
+		};
+		int menu;
+
+		do {
+			menu = JOptionPane.showOptionDialog(null,
+					"File manipulation options",
+					"MENU", JOptionPane.DEFAULT_OPTION,
+					JOptionPane.INFORMATION_MESSAGE,
+					null,
+					options,
+					options[0]);
+
+			switch (menu) {
+			case 0:
+				createDirs();   
+				break;
+			case 1:
+				list();       
+				break;
+			case 2:
+				delete();     
+				break;
+			case 3:
+				attributes(); 
+				break;
+			case 4:
+				break;      
+			default:
+				JOptionPane.showMessageDialog(null, "Error, 1-5 lang");
+			}
+		} while (menu != 4);
+	}
+
+
+	private static void createDirs() {
+		// open a folder picker dialog starting at BASE
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // only folders selectable
+		
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+			//return; // user cancelled
+		}
+
+		Path parent = chooser.getSelectedFile().toPath(); // chosen parent folder
+		Path target = parent.resolve("alphabet/a/b/c/d/e/g"); // deep path to create
+
+		StringBuilder sb = new StringBuilder();
+		if (Files.isDirectory(target)) {
+			sb.append("target already exists: ").append(target);
+		} else {
+			try {
+				Files.createDirectories(target); // creates all missing levels
+				sb.append("Successfully created: ").append(target);
+			} catch (IOException e) {
+				sb.append("createDirectories failed: ").append(e.getMessage()); // reason given
+			}
+		}
+		JOptionPane.showMessageDialog(null, sb);
+	}
+
+	private static void list() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) return;
+
+		Path target = chooser.getSelectedFile().toPath(); // chosen folder
+
+		StringBuilder sb = new StringBuilder();
+		if (!Files.isDirectory(target)) {
+			sb.append("not a directory: ").append(target);
+			JOptionPane.showMessageDialog(null, sb);
+			return;
+		}
+
+		// walk() returns a Stream<Path> that must be closed -> try-with-resources
+		try (Stream<Path> stream = Files.walk(target, 7)) {
+			stream.forEach(p -> sb.append(p).append("\n")); // print every path found
+		} catch (IOException e) {
+			sb.append("walk failed: ").append(e.getMessage());
+		}
+		JOptionPane.showMessageDialog(null, sb);
+	}
+
+	private static void delete() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) return;
+
+		Path target = chooser.getSelectedFile().toPath(); // chosen folder
+
+		StringBuilder sb = new StringBuilder();
+		if (!Files.exists(target)) {
+			sb.append("nothing to delete");
+		} else {
+			try {
+				deleteAll(target); // recursive deletion
+				sb.append("deleted the entire tree: ").append(target);
+			} catch (IOException e) {
+				sb.append("failed to delete all: ").append(e.getMessage()); // reason given
+			}
+		}
+		JOptionPane.showMessageDialog(null, sb);
+	}
+
+	// Helper: recursively delete a folder and everything inside it
+	// Walks the tree, sorts paths in reverse order (deepest first), deletes each
+	private static void deleteAll(Path folder) throws IOException {
+		if (!Files.exists(folder)) return;
+		try (Stream<Path> stream = Files.walk(folder)) {
+			for (Path p : stream.sorted(Comparator.reverseOrder()).toList())
+				Files.delete(p); // deletes one path at a time, deepest first
+		}
+	}
+
+	private static void attributes() {
+		JFileChooser chooser = new JFileChooser();
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) return; // user cancelled
+
+		Path file = chooser.getSelectedFile().toPath(); // chosen file
+
+		StringBuilder sb = new StringBuilder();
+		try {
+			if (!Files.isRegularFile(file)) {
+				sb.append("not a file: ").append(file);
+				
+			} else {
+				// readAttributes returns all attributes in a single call
+				BasicFileAttributes attrs = Files.readAttributes(file, BasicFileAttributes.class);
+				sb.append(file).append("\n\n");
+				sb.append("size: ").append(attrs.size()).append(" bytes\n");           // file size
+				sb.append("last modified: ").append(attrs.lastModifiedTime()).append("\n"); // last modified
+				sb.append("Create: ").append(attrs.creationTime()).append("\n");      // creation time
+			}
+		} catch (IOException e) {
+			sb.append("failed: ").append(e.getMessage());
+		}
+		JOptionPane.showMessageDialog(null, sb);
+	}
+}

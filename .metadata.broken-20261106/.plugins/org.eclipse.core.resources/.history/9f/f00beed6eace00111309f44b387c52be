@@ -1,0 +1,104 @@
+package com.report.basic;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+public class FileManipulation {
+
+	public static void main(String[] args) {
+		
+		String[] options = {
+				"1. Create directories",
+				"2. List files",
+				"3. Delete files",
+				"4. Attributes",
+				"5. Exit"
+		};
+		
+		int menu;
+		
+		do {
+			
+			menu = JOptionPane.showOptionDialog(null,
+											"File manipulation options",
+											"Menu",
+											JOptionPane.DEFAULT_OPTION,
+											JOptionPane.INFORMATION_MESSAGE,
+											null,
+											options,
+											options[0]);
+			
+			switch(menu) {
+			
+			case 0:
+				createDirectories();
+				break;
+			case 1: 
+				break;
+			case 2: 
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			default:
+				JOptionPane.showMessageDialog(null, "Invalid input");
+			}
+			
+			
+		} while (menu != 4);
+	}
+	
+	private static void createDirectories() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
+		
+		Path parent = chooser.getSelectedFile().toPath();
+		Path target = parent.resolve("alphabet/a/b/c");
+		
+		StringBuilder sb = new StringBuilder();
+		
+		if (Files.isDirectory(target)) {
+			sb.append("target already exists");
+		} else {
+	
+			try {
+				Files.createDirectories(target);
+				sb.append("successfully created");
+				
+			} catch (IOException e) {
+				sb.append(e.getMessage());
+			}
+		}
+		
+		JOptionPane.showMessageDialog(null, sb);
+	}
+	
+	private static void list() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
+		
+		Path target = chooser.getSelectedFile().toPath();
+		StringBuilder sb = new StringBuilder();
+		
+		try (Stream<Path> stream = Files.walk(target, 7)) {
+			
+		}
+		
+	}
+	
+
+}

@@ -30,9 +30,17 @@ class TextFormatterServiceTest {
 	}
 
 	@Test
+	void insertsBreakAfterNewDelimiters() {
+		assertEquals("hi!\nphillip", service.format("hi! phillip"));
+		assertEquals("really?\nno", service.format("really? no"));
+		assertEquals("a;\nb", service.format("a; b"));
+		assertEquals("a'\nb", service.format("a'b"));
+	}
+
+	@Test
 	void insertsOneBreakAfterConsecutivePunctuationGroup() {
 		assertEquals("a,.\nb", service.format("a,.b"));
-		assertEquals("Wait...\n what?!", service.format("Wait... what?!"));
+		assertEquals("Wait...\nwhat?!", service.format("Wait... what?!"));
 		assertEquals(",.:", service.format(",.:"));
 	}
 
@@ -58,7 +66,17 @@ class TextFormatterServiceTest {
 
 	@Test
 	void breaksAfterPunctuationBeforeSpace() {
-		assertEquals("a,\n ", service.format("a, "));
+		// Existing break: no new newline added, space preserved.
+		assertEquals("a,\n", service.format("a, "));
+	}
+
+	@Test
+	void trimsLeadingSpaceOnWrappedLine() {
+		// The space after the delimiter becomes the leading indent of the
+		// next line and is trimmed: "hi! phillip" -> "hi!\nphillip".
+		assertEquals("hi!\nphillip", service.format("hi! phillip"));
+		assertEquals("Hello,\nworld.\nWelcome:\nthis is a formatter.",
+				service.format("Hello, world. Welcome: this is a formatter."));
 	}
 
 	@Test
@@ -70,19 +88,19 @@ class TextFormatterServiceTest {
 	}
 
 	@Test
-	void preservesWhitespace() {
-		assertEquals("\t a,\n\t b", service.format("\t a,\t b"));
+	void preservesWhitespaceInOriginalLayout() {
+		assertEquals("\t a,\nb", service.format("\t a,\t b"));
 	}
 
 	@Test
 	void preservesUnicodeAndSurrogatePairs() {
-		assertEquals("héllo,\n wörld 🌍.\n naïve:\n café 🚀",
+		assertEquals("héllo,\nwörld 🌍.\nnaïve:\ncafé 🚀",
 				service.format("héllo, wörld 🌍. naïve: café 🚀"));
 		assertEquals("👍🏽,\nok", service.format("👍🏽,ok"));
 	}
 
 	@Test
-	void preservesEveryOriginalCharacter() {
+	void preservesEveryOriginalCharacterWithoutInsertedBreaks() {
 		String input = "abc,def.ghi:jkl";
 		String formatted = service.format(input);
 
@@ -92,16 +110,14 @@ class TextFormatterServiceTest {
 
 	@Test
 	void formatsSpecExample() {
-		assertEquals("Hello,\n world.\n Welcome:\n this is a formatter.",
+		assertEquals("Hello,\nworld.\nWelcome:\nthis is a formatter.",
 				service.format("Hello, world. Welcome: this is a formatter."));
 	}
 
 	@Test
 	void formatsLargeInput() {
-		String input = "word, ".repeat(200_000);
-		String expected = "word,\n ".repeat(200_000);
-
-		assertEquals(expected, service.format(input));
+		String expected = "word,\n".repeat(200_000);
+		assertEquals(expected, service.format("word, ".repeat(200_000)));
 	}
 
 	@Test
@@ -114,7 +130,7 @@ class TextFormatterServiceTest {
 				"no punctuation"
 		};
 		String[] expected = {
-				"Hello,\n world.\n Welcome:\n this is a formatter.",
+				"Hello,\nworld.\nWelcome:\nthis is a formatter.",
 				"a,.\nb",
 				"a,\nb",
 				"👍🏽,\nok",
@@ -122,8 +138,7 @@ class TextFormatterServiceTest {
 		};
 		ExecutorService executor = Executors.newFixedThreadPool(16);
 		try {
-			List<Future<String>> futures = new ArrayList<>(1_000);
-			for (int i = 0; i < 1_000; i++) {
+			List<Future<String>> futures = new ArrayList<>(1_000);			for (int i = 0; i < 1_000; i++) {
 				int index = i % inputs.length;
 				futures.add(executor.submit(() -> service.format(inputs[index])));
 			}

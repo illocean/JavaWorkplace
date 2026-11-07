@@ -1,0 +1,7 @@
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
+public class T1 {
+    @Test
+    public void adds() { assertEquals(6, Main.calc(5)); }
+}

@@ -20,4 +20,6 @@ public interface EmployeeService {
 	//mandatory in implementation if declared here
 	public EmployeeResponseDTO getEmployeeById(Long id);
 
+	public List<EmployeeResponseDTO> employeeFilter(EmployeeRequestDTO request);
+
 }

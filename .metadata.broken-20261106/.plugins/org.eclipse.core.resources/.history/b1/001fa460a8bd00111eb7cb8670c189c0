@@ -1,0 +1,5 @@
+public class Race2 {
+    static int v() {
+        return AAA;
+    }
+}

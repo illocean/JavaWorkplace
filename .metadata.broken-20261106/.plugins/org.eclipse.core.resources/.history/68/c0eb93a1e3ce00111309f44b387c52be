@@ -1,0 +1,17 @@
+package com.report.basic;
+
+public class FileManipulation {
+
+	public static void main(String[] args) {
+		
+		String[] options = {
+				"1. Create directories",
+				"2. List files",
+				"3. Delete files",
+				"4. Attributes",
+				"5. Exit"
+		};
+	}
+	
+
+}

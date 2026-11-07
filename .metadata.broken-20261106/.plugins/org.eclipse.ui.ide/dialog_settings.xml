@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="installedFeatures">
+		<item value="org.eclipse.eclemma.feature:3.1.11.202511262126"/>
+		<item value="org.eclipse.egit:7.5.0.202512021534-r"/>
+		<item value="org.eclipse.epp.mpc:1.13.0.v20250816-1241"/>
+		<item value="org.eclipse.help:2.3.2400.v20251201-0920"/>
+		<item value="org.eclipse.jgit.gpg.bc:7.5.0.202512021534-r"/>
+		<item value="org.eclipse.jgit.http.apache:7.5.0.202512021534-r"/>
+		<item value="org.eclipse.jgit.ssh.apache:7.5.0.202512021534-r"/>
+		<item value="org.eclipse.jgit:7.5.0.202512021534-r"/>
+		<item value="org.eclipse.m2e.feature:2.10.0.20251127-1007"/>
+		<item value="org.eclipse.m2e.logback.feature:2.7.200.20251018-1026"/>
+		<item value="org.eclipse.mylyn.builds.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.commons.feature:4.9.0.v20251121-0615"/>
+		<item value="org.eclipse.mylyn.commons.identity.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.commons.notifications.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.commons.repositories.feature:4.9.0.v20251121-0701"/>
+		<item value="org.eclipse.mylyn.context.feature:4.9.0.v20251120-0623"/>
+		<item value="org.eclipse.mylyn.egit.feature:4.9.0.v20251126-1724"/>
+		<item value="org.eclipse.mylyn.git.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.github.feature:6.10.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.ide.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.jdt.feature:4.9.0.v20251121-0451"/>
+		<item value="org.eclipse.mylyn.jenkins.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.monitor.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.reviews.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.tasks.feature:4.9.0.v20251123-0732"/>
+		<item value="org.eclipse.mylyn.team.feature:4.9.0.v20251121-0621"/>
+		<item value="org.eclipse.mylyn.versions.feature:4.9.0.v20250920-1858"/>
+		<item value="org.eclipse.mylyn.wikitext.feature:4.9.0.v20251119-1306"/>
+		<item value="org.eclipse.oomph.p2:1.37.0.v20260830-1513"/>
+		<item value="org.eclipse.oomph.setup.core:1.38.0.v20260831-1248"/>
+		<item value="org.eclipse.oomph.setup:1.40.0.v20260901-1411"/>
+		<item value="org.eclipse.platform:4.38.0.v20251201-0920"/>
+		<item value="org.eclipse.rcp:4.38.0.v20251201-0920"/>
+	</list>
+	<section name="NewWizardAction">
+		<item key="NewWizardSelectionPage.STORE_SELECTED_ID" value="org.eclipse.jdt.ui.wizards.JavaProjectWizard"/>
+		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="org.eclipse.jdt.ui.java"/>
+			<item value="org.springsource.ide.eclipse.boot.wizards.category"/>
+		</list>
+		<section name="NewWizard.dialogBounds">
+			<item key="DIALOG_X_ORIGIN" value="0"/>
+			<item key="DIALOG_Y_ORIGIN" value="0"/>
+			<item key="DIALOG_WIDTH" value="525"/>
+			<item key="DIALOG_HEIGHT" value="500"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+	<section name="CleanDialogSettings">
+		<item key="TOGGLE_SELECTED" value="false"/>
+		<item key="DIALOG_WIDTH" value="500"/>
+		<item key="DIALOG_HEIGHT" value="389"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="SmartImportWizard">
+		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
+		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
+		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\andador kim phillip\eclipse-workspace\DIT-31"/>
+		</list>
+		<section name="SmartImportWizard.dialogBounds">
+			<item key="DIALOG_X_ORIGIN" value="366"/>
+			<item key="DIALOG_Y_ORIGIN" value="39"/>
+			<item key="DIALOG_WIDTH" value="885"/>
+			<item key="DIALOG_HEIGHT" value="629"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+	<section name="ExternalProjectImportWizard">
+		<item key="WizardProjectsImportPage.STORE_NESTED_PROJECTS" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="D:\EclipseIDE\eclipse-workspace\DIT-31"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+		<section name="ExternalProjectImportWizard.dialogBounds">
+			<item key="DIALOG_X_ORIGIN" value="546"/>
+			<item key="DIALOG_Y_ORIGIN" value="121"/>
+			<item key="DIALOG_WIDTH" value="623"/>
+			<item key="DIALOG_HEIGHT" value="710"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+	<section name="org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog">
+		<item key="ShowStatusLine" value="true"/>
+		<item key="History" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;&#x0A;&lt;History&gt;&#x0D;&#x0A;&lt;historyRootNode&gt;&#x0D;&#x0A;&lt;infoNode path=&quot;/SpringBoot-DIT/src/main/java/com/pup/taguig/service/impl/EmployeeServiceImpl.java&quot; type=&quot;1&quot;/&gt;&#x0D;&#x0A;&lt;infoNode path=&quot;/SpringBoot-DIT/src/main/java/com/pup/taguig/model/Employee.java&quot; type=&quot;1&quot;/&gt;&#x0D;&#x0A;&lt;infoNode path=&quot;/SpringBoot-DIT/src/main/java/com/pup/taguig/controller/EmployeeController.java&quot; type=&quot;1&quot;/&gt;&#x0D;&#x0A;&lt;/historyRootNode&gt;&#x0D;&#x0A;&lt;/History&gt;"/>
+		<item key="ShowDerived" value="false"/>
+		<item key="FilterByLocation" value="false"/>
+		<item key="WorkingSet" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;&#x0A;&lt;workingSet workingSetName=&quot;&quot;/&gt;"/>
+		<section name="DialogBoundsSettings">
+			<item key="DIALOG_HEIGHT" value="500"/>
+			<item key="DIALOG_WIDTH" value="600"/>
+			<item key="DIALOG_X_ORIGIN" value="508"/>
+			<item key="DIALOG_Y_ORIGIN" value="125"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+</section>

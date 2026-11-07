@@ -30,7 +30,7 @@ class FormatControllerTest {
 						.content("Hello, world. Welcome: this is a formatter."))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(TEXT_PLAIN_UTF8))
-				.andExpect(content().string("Hello,\n world.\n Welcome:\n this is a formatter."));
+				.andExpect(content().string("Hello,\nworld.\nWelcome:\nthis is a formatter."));
 	}
 
 	@Test
@@ -50,7 +50,7 @@ class FormatControllerTest {
 						.content("héllo, wörld 🌍"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(TEXT_PLAIN_UTF8))
-				.andExpect(content().string("héllo,\n wörld 🌍"));
+				.andExpect(content().string("héllo,\nwörld 🌍"));
 	}
 
 	@Test
@@ -60,7 +60,7 @@ class FormatControllerTest {
 						.content("héllo, wörld 🌍"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(TEXT_PLAIN_UTF8))
-				.andExpect(content().string("héllo,\n wörld 🌍"));
+				.andExpect(content().string("héllo,\nwörld 🌍"));
 	}
 
 	@Test

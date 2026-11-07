@@ -41,6 +41,8 @@ public class Notes {
 	 * to search class: ctrl shift r
 	 * 
 	 *  "OpenJPA" - when qeurying its not the sql query but by functions
+	 *  
+	 *  "mybaddies"
 	 * 
 	 */
 	

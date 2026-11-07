@@ -2,6 +2,7 @@ package com.pup.taguig.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,5 +81,18 @@ public class EmployeeController {
 	public EmployeeResponseDTO getEmployeeById(@PathVariable Long id) {
 		
 		return employeeService.getEmployeeById(id);
+	}
+	
+	
+	@PostMapping("/filter")
+	public List<EmployeeResponseDTO> employeeFilter(@RequestBody(required = false) EmployeeRequestDTO request) {
+		
+		List<EmployeeResponseDTO> response = new ArrayList<>();
+		
+		if (Objects.nonNull(request) && Objects.nonNull(request.getName())) {
+			response = employeeService.employeeFilter(request);
+		}
+		
+		return response;
 	}
 }

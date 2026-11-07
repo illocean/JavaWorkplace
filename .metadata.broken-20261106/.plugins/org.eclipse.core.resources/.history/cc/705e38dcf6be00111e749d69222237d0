@@ -1,0 +1,19 @@
+package com.pup.dit.exception;
+
+/**
+ * 10 - 03 - 2026
+ * SCHOOL EQUIPMENT BORROWING SYSTEM
+ *
+ * Custom (checked) exception: the transaction itself is legal Java,
+ * but it breaks a business rule - there is not enough stock to lend out.
+ */
+public class InsufficientEquipmentException extends Exception {
+
+	/**
+	 * create constructor
+	 */
+	public InsufficientEquipmentException(String message) {
+		super(message);
+	}
+
+}

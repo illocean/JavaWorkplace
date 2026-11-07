@@ -1,0 +1,14 @@
+package lunar.hc;
+
+public class Harness {
+    static int compute(int n) {
+        int scaled = n + 21;
+        return scaled;
+    }
+    public static void main(String[] args) throws Exception {
+        Thread.sleep(30000);
+        int sum = 0;
+        for (int i = 1; i <= 10; i++) sum += i;
+        System.out.println("LUNAR_HC_SUM=" + sum + " SCALED=" + compute(2));
+    }
+}

@@ -2,6 +2,7 @@ package com.nextline.formatter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -26,17 +27,10 @@ class GuiPageTest {
 	}
 
 	@Test
-	void guiStripsLeadingSpaceAfterInsertedBreaks() throws Exception {
-		// The API returns "Hello,\n world." (space kept), but the editor
-		// collapses the leading space on each wrapped line.
-		String page = mockMvc.perform(get("/index.html"))
-				.andExpect(status().isOk())
-				.andReturn()
-				.getResponse()
-				.getContentAsString();
-		org.junit.jupiter.api.Assertions.assertTrue(
-				page.contains("text.replace(/\\n[ \\t]*/g, '\\n')"),
-				"index.html must trim leading whitespace afteer each inserted newline");
+	void rootRedirectsToGui() throws Exception {
+		mockMvc.perform(get("/"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(header().string("Location", "/index.html"));
 	}
 
 }

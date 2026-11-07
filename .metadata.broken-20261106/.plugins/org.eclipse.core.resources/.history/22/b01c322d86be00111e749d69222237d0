@@ -1,0 +1,2 @@
+package healthcheck;
+public class Delta { int bad = "x"; }

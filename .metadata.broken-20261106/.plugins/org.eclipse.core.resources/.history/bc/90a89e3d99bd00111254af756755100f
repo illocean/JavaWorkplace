@@ -1,0 +1,6 @@
+
+public class Useless {
+    public int answer() {
+        return 42;
+    }
+}

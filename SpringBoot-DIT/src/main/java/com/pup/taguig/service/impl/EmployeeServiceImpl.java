@@ -74,6 +74,28 @@ public class EmployeeServiceImpl implements EmployeeService{
 		EmployeeResponseDTO responseDTO = new EmployeeResponseDTO();
 		System.out.println(employee.toString());
 		
-		return null;
+		responseDTO.setId(employee.getId());
+		responseDTO.setName(employee.getName());
+		responseDTO.setPosition(employee.getPosition());
+		responseDTO.setSalary(employee.getSalary());
+		
+		return responseDTO;
+	}
+
+	@Override
+	public List<EmployeeResponseDTO> employeeFilter(EmployeeRequestDTO request) {
+		List<EmployeeResponseDTO> response = new ArrayList<EmployeeResponseDTO>();
+		
+		List<Employee> employees = null;
+		
+							//customized findByName
+		employees = repository.findByName(request.getName());
+		
+		//business logic:
+		for (Employee employee : employees) {
+			response.add(convertEmployeeToResponse(employee));
+		}
+		
+		return response;
 	}
 }

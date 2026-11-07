@@ -1,0 +1,11 @@
+package lunar.hc;
+
+public class Subject {
+    static final String MARKER = "LUNAR_HC_TOKEN_Q7X2";
+    public static int twice(int n) {
+        return n * 2;
+    }
+    public static void main(String[] args) {
+        System.out.println("VALUE=" + twice(21));
+    }
+}

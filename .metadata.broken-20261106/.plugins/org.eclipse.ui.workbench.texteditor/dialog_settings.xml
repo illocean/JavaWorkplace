@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="java.lang.Class">
+		<item key="replaceBarOpen" value="true"/>
+		<list key="replacehistory">
+			<item value="Employee"/>
+			<item value=" "/>
+		</list>
+		<list key="findhistory">
+			<item value="demofolder"/>
+			<item value="demo"/>
+			<item value="EmployeeModel"/>
+			<item value="totext"/>
+			<item value="addEquipment"/>
+			<item value="*"/>
+		</list>
+	</section>
+</section>

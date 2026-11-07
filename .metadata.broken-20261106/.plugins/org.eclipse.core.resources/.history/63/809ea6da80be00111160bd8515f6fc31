@@ -1,0 +1,7 @@
+package healthcheck;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("LUNAR_HEALTHCHECK_MARKER_7F3A91");
+    }
+}

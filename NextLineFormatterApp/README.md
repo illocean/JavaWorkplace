@@ -67,7 +67,7 @@ http://localhost:8080/
 
 Opening that address loads the GUI (`/api/v1/format` is called in the background, so the result is identical to the API). `GET /` redirects (`302`) to `/index.html`, which is served as static content by Spring Boot.
 
-> **Display note.** The API preserves every character, including the space that follows an inserted break: `Hello, world.` → `Hello,\n world.`. In the *editor only*, that leading space on a wrapped line is visually trimmed client-side for tidier output (`Hello,\n world.` → `Hello,\nworld.`), so the pasted  display may show one fewer space than the raw API response. Copy and Save `.txt` use the trimmed editor text. To get the exact unmodified bytes, bypass the GUI and call `POST /api/v1/format` directly.
+> **Display note.** The API trims the single leading space (or tab) on a line created by an *inserted* break only. So `hi! phillip` returns `hi!\nphillip`. Existing line breaks from the input — and their indentation — are preserved exactly, and trailing spaces on a line are kept.
 
 In the editor:
 
@@ -93,11 +93,13 @@ An empty request body is accepted: the service returns `200 OK` with an empty re
 
 ## Formatting rules
 
-1. Insert one LF after each punctuation group that is followed by a character other than LF or CR; if the group ends the input, no LF is added.
-2. Consecutive punctuation marks are one group and receive exactly one break:
+A delimiter is any of:  comma `,`, period `.`, colon `:`, exclamation `!`, question `?`, semicolon `;`, apostrophe `'`, or double quote `"`.
+
+1. Insert one LF after each delimiter run that is followed by a character other than LF or CR; if the group ends the input, no LF is added.
+2. Consecutive delimiters form one group and receive exactly one break:
    - `"a,.b"` becomes `"a,.\nb"`.
-   - `"Wait... what?!"` becomes `"Wait...\n what?!"`.
-   - `",.:"` is unchanged because there is no following character.
+   - `"Wait... what?!"` becomes `"Wait...\nwhat?!"`.
+   - `",.?;:'\""` is unchanged because there is no following character.
 3. Never append a trailing newline:
    - `"a,"` stays `"a,"`.
    - `"done."` stays `"done."`.
@@ -106,8 +108,8 @@ An empty request body is accepted: the service returns `200 OK` with an empty re
    - `"a.\r\nb"` is unchanged.
    - `"a,\rb"` is unchanged.
 5. Leading punctuation is followed by a break: `",a"` becomes `",\na"`.
-6. Punctuation followed by a space breaks before the space: `"a, "` becomes `"a,\n "`.
-7. Every other character is preserved exactly, including tabs, spaces, Unicode, and emoji (including surrogate pairs).
+6. Punctuation followed by a space breaks before the space, and the leading space on the new line is trimmed: `"a, "` becomes `"a,\n"`.
+7. Trimming of the indent on wrapped lines. When a break is *inserted* after a delimiter, a single leading space or tab on the new line is removed, so the text follows directly after the newline: `"hi! phillip"` becomes `"hi!\nphillip"`. Existing line breaks and any indentation after them are preserved untouched (see rule 5). Trailing spaces on any line are preserved.
 8. Formatting is `O(n)` in the input length by construction. The service holds no state, so a single instance is thread-safe.
 
 Example:
@@ -115,9 +117,9 @@ Example:
 ```text
 Input:  Hello, world. Welcome: this is a formatter.
 Output: Hello,
- world.
- Welcome:
- this is a formatter.
+world.
+Welcome:
+this is a formatter.
 ```
 
 The output ends immediately after the final period; there is no trailing LF.
@@ -136,9 +138,9 @@ Expected status: `200`. Expected response header: `Content-Type: text/plain;char
 
 ```text
 Hello,
- world.
- Welcome:
- this is a formatter.
+world.
+Welcome:
+this is a formatter.
 ```
 
 No newline is appended after the final period.
@@ -153,9 +155,9 @@ Expected body:
 
 ```text
 héllo,
- wörld 🌍.
- naïve:
- café 🚀
+wörld 🌍.
+naïve:
+café 🚀
 ```
 
 Windows PowerShell 5.1 converts native command arguments using the system code page, so emoji can be altered before curl runs. If that happens, write the text to a UTF-8 file without a BOM and post that file:
@@ -200,6 +202,10 @@ Test coverage is split into:
 
 - `TextFormatterServiceTest` — plain JUnit unit tests: each delimiter, punctuation groups, existing LF/CRLF/CR, leading and trailing punctuation, whitespace, Unicode and emoji, exact character preservation, a large input, and concurrent use of one shared service instance.
 - `FormatControllerTest` — `@WebMvcTest` slice with `MockMvc`: exact status codes, media types, response bodies, empty body, `415`, and `405`.
-- `FormatEndpointIntegrationTest` — `@SpringBootTest` with `@AutoConfigureMockMvc`: end-to-end wiring through the full application context.
-- `GuiPageTest` — verifies that `GET /index.html` serves the editor page containing the `#input` and `#output` elements and the `fetch('/api/v1/format')` call.
+- `FormatEndpointIntegrationTest` — `@SpringBootTest` with `@AutoConfigureMockMvc`: end-to-end wiring through the full applicatiion context.
+- `GuiPageTest` — verifies that `GET /index.html` serves the editor page containing the `#input` and `#output` elements and the `fetch('/api/v1/format')` call, and that `GET /` redirects to the GUI.
 - `NextLineFormatterAppApplicationTests` — verifies that the application context loads.
+
+## Run the GUI without Eclipse
+
+Double-click `run.bat` in the project root, then open `http://localhost:8080/` in any browser.

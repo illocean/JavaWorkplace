@@ -1,0 +1,35 @@
+package com.report.basic;
+
+import javax.swing.JOptionPane;
+
+public class FileManipulation {
+
+	public static void main(String[] args) {
+		
+		String[] options = {
+				"1. Create directories",
+				"2. List files",
+				"3. Delete files",
+				"4. Attributes",
+				"5. Exit"
+		};
+		
+		int menu;
+		
+		do {
+			
+			menu = JOptionPane.showOptionDialog(null,
+											"File manipulation options",
+											"Menu",
+											JOptionPane.DEFAULT_OPTION,
+											JOptionPane.INFORMATION_MESSAGE,
+											null,
+											options,
+											options[0]);
+			
+			
+		} while (menu != 4);
+	}
+	
+
+}

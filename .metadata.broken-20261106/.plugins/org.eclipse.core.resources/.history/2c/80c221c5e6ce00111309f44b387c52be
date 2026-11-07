@@ -1,0 +1,76 @@
+package com.report.basic;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+public class FileManipulation {
+
+	public static void main(String[] args) {
+		
+		String[] options = {
+				"1. Create directories",
+				"2. List files",
+				"3. Delete files",
+				"4. Attributes",
+				"5. Exit"
+		};
+		
+		int menu;
+		
+		do {
+			
+			menu = JOptionPane.showOptionDialog(null,
+											"File manipulation options",
+											"Menu",
+											JOptionPane.DEFAULT_OPTION,
+											JOptionPane.INFORMATION_MESSAGE,
+											null,
+											options,
+											options[0]);
+			
+			switch(menu) {
+			
+			case 0:
+				createDirectories();
+				break;
+			case 1: 
+				break;
+			case 2: 
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			default:
+				JOptionPane.showMessageDialog(null, "Invalid input");
+			}
+			
+			
+		} while (menu != 4);
+	}
+	
+	private static void createDirectories() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
+		
+		Path parent = chooser.getSelectedFile().toPath();
+		Path target = parent.resolve("alphabet");
+		
+		StringBuilder sb = new StringBuilder();
+		
+		if (Files.isDirectory(target)) {
+			sb.append("Successfully created: ");
+		}
+		
+		
+	}
+	
+
+}

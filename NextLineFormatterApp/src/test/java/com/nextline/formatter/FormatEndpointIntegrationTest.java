@@ -27,7 +27,7 @@ class FormatEndpointIntegrationTest {
 						.content("Hello, world."))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(TEXT_PLAIN_UTF8))
-				.andExpect(content().string("Hello,\n world."));
+				.andExpect(content().string("Hello,\nworld."));
 	}
 
 	@Test

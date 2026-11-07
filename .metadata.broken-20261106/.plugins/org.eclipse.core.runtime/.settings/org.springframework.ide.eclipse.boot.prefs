@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+org.springframework.ide.eclipse.boot.wizard.PopularityTracker.web=6
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.artifactId=SpringBoot-DIT
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.bootVersion=4.1.1
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.description=Activity - Advance Programming
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.groupId=com.pup.taguig
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.javaVersion=21
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.language=java
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.name=SpringBoot-DIT
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.packageName=com.pup.taguig
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.packaging=jar
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.type=MAVEN
+org.springframework.ide.eclipse.boot.wizard.PreferredSelections.version=0.0.1-SNAPSHOT
+org.springframework.ide.eclipse.boot.wizard.initializr.url=https\://start.spring.io\n
